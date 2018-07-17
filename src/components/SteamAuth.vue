@@ -48,7 +48,7 @@ export default {
 
       console.log('Fetched user')
       
-      if (apiUser.data.steamid == this.$store.state.auth.steamId || apiUser.data.steamid == '') {
+      if (apiUser.data.steamid == this.$store.state.auth.steamId) {
         console.log('User is already linked.')
         this.$store.commit('setSteamUser', json)
         window.localStorage.setItem('steamUser', JSON.stringify(json))
