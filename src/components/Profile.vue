@@ -76,7 +76,7 @@ export default {
       this.$store.commit('setSteamUser', null)
     },
     loadUserInfo: function (id) {
-      axios.get(`http://192.243.102.112:8000/users/${id}`).then(response => {
+      axios.get(`http://macho.ga:8000/users/${id}`).then(response => {
         let div = document.getElementById('profile')
         div.innerHTML = `
         <hr>

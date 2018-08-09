@@ -51,7 +51,7 @@ export default {
       this.$store.commit('setJWT', null)
     },
     async fetchToken () {
-      const response = await axios.get(`http://192.243.102.112:8000/discordauth?code=${this.$store.state.auth.discordCode}&redirect=${redirect}`)
+      const response = await axios.get(`http://macho.ga:8000/discordauth?code=${this.$store.state.auth.discordCode}&redirect=${redirect}`)
       const json = response.data
       this.$store.commit('setDiscordToken', json[0].access_token)
       this.$store.commit('setJWT', json[1].jwt)
@@ -65,14 +65,17 @@ export default {
       const json = response.data
       this.$store.commit('setDiscordUser', json)
       window.localStorage.setItem('discordUser', JSON.stringify(this.$store.state.auth.discordUser))
-      const {data: apiUser} = await axios.get(`http://192.243.102.112:8000/users/${json.id}`)
-      // eslint-disable-next-line
-      if (apiUser.steamid != '' && apiUser.steamid != null && apiUser.steamid != 'null') {
-        window.localStorage.setItem('steamId', apiUser.steamid)
-        this.$store.commit('setSteamId', apiUser.steamid)
-        const steamUser = await axios.get(`http://macho.ga:8000/steamauth/id/${window.localStorage.steamId || this.$store.state.auth.steamId}`)
-        this.$store.commit('setSteamUser', steamUser.data)
+      const {data: apiUser} = await axios.get(`http://macho.ga:8000/users/${json.id}`)
+
+      if (apiUser.links.steamId !== '') {
+        window.localStorage.setItem('steamId', apiUser.links.steamId)
+        this.$store.commit('setSteamId', apiUser.links.steamId)
+        const { data: steamUser } = await axios.get(`http://macho.ga:8000/steamauth/id/${window.localStorage.steamId || this.$store.state.auth.steamId}`)
+
+        this.$store.commit('setSteamUser', steamUser)
+        window.localStorage.setItem('steamUser', JSON.stringify(steamUser))
       }
+
       if (window.location.toString().includes('macho')) {
         window.location = 'http://www.macho.ga'
       } else if (window.location.toString().includes('localhost')) {
