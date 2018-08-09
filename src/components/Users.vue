@@ -26,9 +26,9 @@
                     <tr style="cursor:pointer" @click="loadUserInfo(user.id)">
                       <td>
                         {{ user.name }}
-                        <div :id="user.id"></div>
                       </td>
                     </tr>
+                    <div :id="user.id"></div>
                   </tbody>
                 </table>
               </div>
@@ -55,6 +55,7 @@ import Footer from './Footer.vue'
 import NavigationDrawer from './NavigationDrawer.vue'
 import Chips from './Chips.vue'
 import Buttons from './Buttons.vue'
+
 export default {
   name: 'Users',
   components: {
@@ -95,13 +96,16 @@ export default {
         this.$store.commit('removeUsersOpen', id)
         return true
       }
+
       if (this.$store.state.opened.usersOpened.includes(id)) {
         document.getElementById(id).setAttribute('style', 'display:initial')
         this.$store.commit('addUsersOpen', id)
         return true
       }
+
       this.$store.commit('addUsersOpen', id)
       this.$store.commit('addUsersOpened', id)
+
       axios.get(`http://192.243.102.112:8000/users/${id}`).then(response => {
         let div = document.getElementById(id)
         div.innerHTML = `
@@ -116,7 +120,7 @@ export default {
         <tbody>
         <tr>
           <td>Date created</td>
-          <td>${response.data.datecreated}</td>
+          <td>${response.data.dateCreated}</td>
         </tr>
         <tr>
           <td>ID</td>
@@ -124,19 +128,23 @@ export default {
         </tr>
         <tr>
           <td>Avatar</td>
-          <td><img src="${response.data.avatarurl}" height="64" width="64"></td>
+          <td><img src="${response.data.avatarUrl}" height="64" width="64"></td>
         </tr>
         <tr>
           <td>Banned</td>
           <td>${response.data.banned}</td>
         </tr>
         <tr>
+          <td>Admin</td>
+          <td>${response.data.admin}</td>
+        </tr>
+        <tr>
           <td>Date of last message</td>
-          <td>${response.data.datelastmessage}</td>
+          <td>${response.data.dateLastMessage}</td>
         </tr>
         <tr>
           <td>Steam ID</td>
-          <td>${response.data.steamid}</td>
+          <td>${response.data.links.steamId}</td>
         </tr>
         <tr>
           <td>XP</td>
@@ -156,11 +164,11 @@ export default {
         </tr>
         <tr>
           <td>Net worth</td>
-          <td>${response.data.balance.networth}</td>
+          <td>${response.data.balance.netWorth}</td>
         </tr>
         <tr>
           <td>Last claimed dailies</td>
-          <td>${response.data.balance.dateclaimeddailies}</td>
+          <td>${response.data.balance.dateClaimedDailies}</td>
         </tr>
         </tbody>
         </table>

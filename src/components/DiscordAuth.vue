@@ -23,6 +23,7 @@ export default {
   created () {
     const token = window.localStorage.getItem('discordToken')
     const user = window.localStorage.getItem('discordUser')
+
     if (token && user) {
       this.$store.commit('setDiscordToken', token)
       this.$store.commit('setDiscordUser', JSON.parse(user))
@@ -64,10 +65,9 @@ export default {
       const json = response.data
       this.$store.commit('setDiscordUser', json)
       window.localStorage.setItem('discordUser', JSON.stringify(this.$store.state.auth.discordUser))
-      const apiUserData = await axios.get(`http://192.243.102.112:8000/users/${json.id}`)
-      const apiUser = apiUserData.data
+      const {data: apiUser} = await axios.get(`http://192.243.102.112:8000/users/${json.id}`)
       // eslint-disable-next-line
-      if (apiUser.steamid != '' && apiUser.steamid != null && apiUser.steamid != 'null' && apiUser.steamid != undefined) {
+      if (apiUser.steamid != '' && apiUser.steamid != null && apiUser.steamid != 'null') {
         window.localStorage.setItem('steamId', apiUser.steamid)
         this.$store.commit('setSteamId', apiUser.steamid)
         const steamUser = await axios.get(`http://macho.ga:8000/steamauth/id/${window.localStorage.steamId || this.$store.state.auth.steamId}`)
@@ -78,104 +78,6 @@ export default {
       } else if (window.location.toString().includes('localhost')) {
         window.location = 'http://localhost:8080'
       }
-    },
-    loadUserInfo (id) {
-      document.getElementById(id).setAttribute('style', 'display:initial')
-      if (this.$store.state.opened.usersOpen.includes(id)) {
-        return true
-      }
-      if (this.$store.state.opened.usersOpened.includes(id)) {
-        document.getElementById(id).setAttribute('style', 'display:initial')
-        this.$store.commit('addUsersOpen', id)
-        return true
-      }
-      this.$store.commit('addUsersOpen', id)
-      this.$store.commit('addUsersOpened', id)
-      axios.get(`http://macho.ga:8000/users/${id}`).then(response => {
-        let div = document.getElementById(response.data.id)
-        div.innerHTML = `
-        <hr>
-        <table style="margin:auto" class="highlight centered">
-        <thead>
-          <tr>
-            <th>Property</th>
-            <th>Value</th>
-          </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td>Date created</td>
-          <td>${response.data.dateCreated}</td>
-        </tr>
-        <tr>
-          <td>ID</td>
-          <td>${response.data.id}</td>
-        </tr>
-        <tr>
-          <td>Avatar</td>
-          <td><img src="${response.data.avatarUrl}" height="64" width="64"></td>
-        </tr>
-        <tr>
-          <td>Banned</td>
-          <td>${response.data.banned}</td>
-        </tr>
-        <tr>
-          <td>Date of last message</td>
-          <td>${response.data.dateLastMessage}</td>
-        </tr>
-        <tr>
-          <td>XP</td>
-          <td>${response.data.level.xp}</td>
-        </tr>
-        <tr>
-          <td>Level</td>
-          <td>${response.data.level.level}</td>
-        </tr>
-        <tr>
-          <td>Last level up</td>
-          <td>${response.data.level.timestamp}</td>
-        </tr>
-        <tr>
-          <td>Balance</td>
-          <td>${response.data.balance.balance}</td>
-        </tr>
-        <tr>
-          <td>Net worth</td>
-          <td>${response.data.balance.netWorth}</td>
-        </tr>
-        <tr>
-          <td>Last claimed dailies</td>
-          <td>${response.data.balance.dateLastClaimedDailies}</td>
-        </tr>
-        <tr>
-          <td>Title</td>
-          <td>${response.data.profile.title}</td>
-        </tr>
-        <tr>
-          <td>Bio</td>
-          <td>${response.data.profile.bio}</td>
-        </tr>
-        <tr>
-          <td>Background</td>
-          <td>${response.data.profile.background}</td>
-        </tr>
-        <tr>
-          <td>Levels enabled</td>
-          <td>${response.data.settings.levelsEnabled}</td>
-        </tr>
-        <tr>
-          <td>DMs enabled</td>
-          <td>${response.data.settings.directMessagesEnabled}</td>
-        </tr>
-        <tr>
-          <td>DB ID</td>
-          <td>${response.data.settings.id}</td>
-        </tr>
-        </tbody>
-        </table>
-        <hr>
-        `
-      })
     }
   }
 }
