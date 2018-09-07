@@ -29,7 +29,7 @@
           </v-flex>
           <v-flex shrink>
             <v-tooltip right>
-              <v-btn slot='activator' href='https://github.com/jasonhaxstuff/machogui' icon large target='_blank'>
+              <v-btn slot='activator' href='https://github.com/machobot/gui' icon large target='_blank' rel="noopener">
                 <v-icon large>code</v-icon>
               </v-btn>
               <span>Source</span>

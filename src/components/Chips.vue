@@ -11,7 +11,7 @@
     <!-- <p v-if="!this.$store.state.site.desktop && !apiStatus()">The Macho API seems to be down, currently. How sad, nothing will work.</p> -->
     <v-container grid-list-xl>
     <v-flex>
-      <v-chip label outline color="green">Welcome to the official Macho GUI! This website is mostly for people that cannot/don't want to read the JSON on the official&nbsp;<a href="http://macho.ninja:8000/users" target="_blank">Macho API</a>.</v-chip>
+      <v-chip label outline color="green">Welcome to the official Macho GUI! This website is mostly for people that cannot/don't want to read the JSON on the official&nbsp;<a href="http://macho.ninja:8000/users" target="_blank" rel="noopener">Macho API</a>.</v-chip>
     </v-flex>
     <!-- <v-flex>
       <v-chip label outline color="red" v-if="this.$store.state.site.desktop && !apiStatus()">The Macho API seems to be down, currently. How sad, nothing will work.</v-chip>

@@ -8,31 +8,31 @@
     >
       <v-card-text>
         <v-tooltip top>
-          <v-btn icon slot="activator" class="mx-3 white--text" target="_blank" href="https://github.com/jasonhaxstuff">
+          <v-btn icon slot="activator" class="mx-3 white--text" target="_blank" href="https://github.com/jasonhaxstuff" rel="noopener">
             <v-icon size="24px">{{ icons[0] }}</v-icon>
           </v-btn>
           <span>GitHub</span>
         </v-tooltip>
         <v-tooltip top>
-          <v-btn icon slot="activator" class="mx-3 white--text" target="_blank" href="https://twitter.com/jasonhaxstuff">
+          <v-btn icon slot="activator" class="mx-3 white--text" target="_blank" href="https://twitter.com/jasonhaxstuff" rel="noopener">
             <v-icon size="24px">{{ icons[1] }}</v-icon>
           </v-btn>
           <span>Twitter</span>
         </v-tooltip>
         <v-tooltip top>
-          <v-btn icon slot="activator" class="mx-3 white--text" target="_blank" href="https://discord.gg/ndxe5Qm">
+          <v-btn icon slot="activator" class="mx-3 white--text" target="_blank" href="https://discord.gg/ndxe5Qm" rel="noopener">
             <v-icon size="24px">{{ icons[2] }}</v-icon>
           </v-btn>
           <span>Discord</span>
         </v-tooltip>
         <v-tooltip top>
-          <v-btn icon slot="activator" class="mx-3 white--text" target="_blank" href="https://namemc.com/profile/JasonHaxStuff.1">
+          <v-btn icon slot="activator" class="mx-3 white--text" target="_blank" href="https://namemc.com/profile/JasonHaxStuff.1" rel="noopener">
             <v-icon size="24px">{{ icons[3] }}</v-icon>
           </v-btn>
           <span>Minecraft</span>
         </v-tooltip>
         <v-tooltip top>
-          <v-btn icon slot="activator" class="mx-3 white--text" target="_blank" href="https://www.instagram.com/rickandmorty/">
+          <v-btn icon slot="activator" class="mx-3 white--text" target="_blank" href="https://www.instagram.com/rickandmorty/" rel="noopener">
             <v-icon size="24px">{{ icons[4] }}</v-icon>
           </v-btn>
           <span>Instagram</span>
