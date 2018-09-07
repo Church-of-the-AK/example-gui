@@ -68,7 +68,7 @@ export default {
   },
   methods: {
     unlinkSteam () {
-      axios.post(`http://macho.ga:8000/steamauth/link?discordId=${this.$store.state.auth.discordUser.id}&steamId=null&jwt=${window.localStorage.jwt || this.$store.state.auth.jwt}`)
+      axios.post(`http://macho.ninja:8000/steamauth/link?discordId=${this.$store.state.auth.discordUser.id}&steamId=null&jwt=${window.localStorage.jwt || this.$store.state.auth.jwt}`)
       window.localStorage.removeItem('steamId')
       window.localStorage.removeItem('steamUser')
       this.$store.commit('setSteamAuthenticated', false)
@@ -76,7 +76,7 @@ export default {
       this.$store.commit('setSteamUser', null)
     },
     loadUserInfo: function (id) {
-      axios.get(`http://macho.ga:8000/users/${id}`).then(response => {
+      axios.get(`http://macho.ninja:8000/users/${id}`).then(response => {
         let div = document.getElementById('profile')
         div.innerHTML = `
         <hr>

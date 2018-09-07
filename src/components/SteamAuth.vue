@@ -1,6 +1,6 @@
 <template>
   <div id="steamAuth">
-    <form action="http://macho.ga:8000/steamauth" method="post" v-if="this.$store.state.auth.discordUser && !this.$store.state.auth.steamUser">
+    <form action="http://macho.ninja:8000/steamauth" method="post" v-if="this.$store.state.auth.discordUser && !this.$store.state.auth.steamUser">
       <input name="submit" type="image" src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_small.png" alt="Sign-in through Steam">
     </form>
   </div>
@@ -35,11 +35,11 @@ export default {
     },
     async fetchUser () {
       const response = await axios.get(
-        `http://macho.ga:8000/steamauth/id/${window.localStorage.steamId ||
+        `http://macho.ninja:8000/steamauth/id/${window.localStorage.steamId ||
           this.$store.state.auth.steamId}`
       )
       const { data: apiUser } = await axios.get(
-        `http://macho.ga:8000/users/${this.$store.state.auth.discordUser.id}`
+        `http://macho.ninja:8000/users/${this.$store.state.auth.discordUser.id}`
       )
       const json = response.data
 
@@ -52,7 +52,7 @@ export default {
         window.localStorage.setItem('steamUser', JSON.stringify(json))
         window.localStorage.setItem('steamId', json.steamid)
         if (window.location.toString().includes('macho')) {
-          window.location = 'http://www.macho.ga'
+          window.location = 'http://www.macho.ninja'
         } else if (window.location.toString().includes('localhost')) {
           window.location = 'http://localhost:8080'
         }
@@ -64,7 +64,7 @@ export default {
       }
 
       const linkRes = await axios.post(
-        `http://macho.ga:8000/steamauth/link?discordId=${
+        `http://macho.ninja:8000/steamauth/link?discordId=${
           this.$store.state.auth.discordUser.id
         }&steamId=${json.steamid}&jwt=${window.localStorage.jwt ||
           this.$store.state.auth.jwt}`
@@ -78,7 +78,7 @@ export default {
         window.localStorage.removeItem('steamId')
         console.log('Error')
         if (window.location.toString().includes('macho')) {
-          window.location = 'http://www.macho.ga'
+          window.location = 'http://www.macho.ninja'
         } else if (window.location.toString().includes('localhost')) {
           window.location = 'http://localhost:8080'
         }
@@ -91,7 +91,7 @@ export default {
       window.localStorage.setItem('steamId', json.steamid)
       console.log('Linked account')
       if (window.location.toString().includes('macho')) {
-        window.location = 'http://www.macho.ga'
+        window.location = 'http://www.macho.ninja'
       } else if (window.location.toString().includes('localhost')) {
         window.location = 'http://localhost:8080'
       }

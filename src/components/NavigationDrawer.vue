@@ -62,6 +62,7 @@
       <v-toolbar-title>Macho GUI</v-toolbar-title>
       <v-spacer></v-spacer>
       <steamAuth />
+      <githubAuth />
       <discordAuth />
     </v-toolbar>
 </div>
@@ -70,10 +71,13 @@
 <script>
 import DiscordAuth from './DiscordAuth.vue'
 import SteamAuth from './SteamAuth.vue'
+import GithubAuth from './GithubAuth.vue'
+
 export default {
   components: {
     'discordAuth': DiscordAuth,
-    'steamAuth': SteamAuth
+    'steamAuth': SteamAuth,
+    'githubAuth': GithubAuth
   },
   data: () => ({
     drawer: false

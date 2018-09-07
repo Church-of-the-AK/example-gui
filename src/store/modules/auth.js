@@ -7,6 +7,9 @@ export default {
     steamAuthenticated: null,
     steamId: null,
     steamUser: null,
+    githubAuthenticated: null,
+    githubId: null,
+    githubUser: null,
     jwt: null
   },
   mutations: {
@@ -30,6 +33,15 @@ export default {
     },
     setSteamId (state, id) {
       state.steamId = id
+    },
+    setGithubUser (state, user) {
+      state.githubUser = user
+    },
+    setGithubAuthenticated (state, bool) {
+      state.githubAuthenticated = bool
+    },
+    setGithubId (state, id) {
+      state.githubId = id
     },
     setJWT (state, jwt) {
       state.jwt = jwt

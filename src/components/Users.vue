@@ -86,7 +86,7 @@ export default {
       if (this.users) {
         return true
       }
-      axios.get('http://macho.ga:8000/users').then(response => {
+      axios.get('http://macho.ninja:8000/users').then(response => {
         this.users = response.data
       })
     },
@@ -106,7 +106,7 @@ export default {
       this.$store.commit('addUsersOpen', id)
       this.$store.commit('addUsersOpened', id)
 
-      axios.get(`http://macho.ga:8000/users/${id}`).then(response => {
+      axios.get(`http://macho.ninja:8000/users/${id}`).then(response => {
         let div = document.getElementById(id)
         div.innerHTML = `
         <hr>
