@@ -53,9 +53,7 @@ export default {
         }
         return true
       } else {
-        console.log(
-          `${apiUser.links.githubId} != ${this.$store.state.auth.githubId}`
-        )
+        console.log(`${apiUser.links.githubId} != ${this.$store.state.auth.githubId}`)
       }
 
       const linkRes = await axios.post(

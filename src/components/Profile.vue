@@ -23,6 +23,21 @@
                   </v-btn>
                 </v-list-tile-action>
               </v-list-tile>
+
+              <v-list-tile avatar v-if='this.$store.state.auth.githubAuthenticated'>
+                <v-list-tile-avatar>
+                  <i class='fab fa-github'></i>
+                </v-list-tile-avatar>
+                <v-list-tile-content>
+                  <v-list-tile-title>GitHub</v-list-tile-title>
+                  <v-list-tile-sub-title>{{ this.$store.state.auth.githubUser.login }}</v-list-tile-sub-title>
+                </v-list-tile-content>
+                <v-list-tile-action>
+                  <v-btn v-on:click='unlinkGithub()'>
+                    <i class='fas fa-sign-out-alt'/>
+                  </v-btn>
+                </v-list-tile-action>
+              </v-list-tile>
             </v-list>
             <div id='profile'>
             </div>
@@ -59,21 +74,40 @@ export default {
   created () {
     const token = window.localStorage.getItem('discordToken')
     const user = window.localStorage.getItem('discordUser')
+
     if (token && user) {
       this.$store.commit('setDiscordToken', token)
       this.$store.commit('setDiscordUser', JSON.parse(user))
       this.$store.commit('setDiscordAuthenticated', true)
     }
+
+    const github = window.localStorage.getItem('githubId')
+    const githubUser = window.localStorage.getItem('githubUser')
+
+    if (github && githubUser) {
+      this.$store.commit('setGithubId', github)
+      this.$store.commit('setGithubUser', JSON.parse(githubUser))
+      this.$store.commit('setGithubAuthenticated', true)
+    }
+
     this.loadUserInfo(this.$store.state.auth.discordUser.id)
   },
   methods: {
     unlinkSteam () {
-      axios.post(`http://macho.ninja:8000/steamauth/link?discordId=${this.$store.state.auth.discordUser.id}&steamId=null&jwt=${window.localStorage.jwt || this.$store.state.auth.jwt}`)
+      axios.post(`http://macho.ninja:8000/steamauth/link?discordId=${this.$store.state.auth.discordUser.id}&steamId&jwt=${window.localStorage.jwt || this.$store.state.auth.jwt}`)
       window.localStorage.removeItem('steamId')
       window.localStorage.removeItem('steamUser')
       this.$store.commit('setSteamAuthenticated', false)
       this.$store.commit('setSteamId', null)
       this.$store.commit('setSteamUser', null)
+    },
+    unlinkGithub () {
+      axios.post(`http://macho.ninja:8000/githubauth/link?discordId=${this.$store.state.auth.discordUser.id}&githubId&jwt=${window.localStorage.jwt || this.$store.state.auth.jwt}`)
+      window.localStorage.removeItem('githubId')
+      window.localStorage.removeItem('githubUser')
+      this.$store.commit('setGithubAuthenticated', false)
+      this.$store.commit('setGithubId', null)
+      this.$store.commit('setGithubUser', null)
     },
     loadUserInfo: function (id) {
       axios.get(`http://macho.ninja:8000/users/${id}`).then(response => {
@@ -115,6 +149,10 @@ export default {
         <tr>
           <td>Steam ID</td>
           <td>${response.data.links.steamId}</td>
+        </tr>
+        <tr>
+          <td>GitHub ID</td>
+          <td>${response.data.links.githubId}</td>
         </tr>
         <tr>
           <td>XP</td>
