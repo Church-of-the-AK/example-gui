@@ -4,7 +4,7 @@
     <v-content>
       <v-container fluid fill-height text-xs-center>
         <v-layout justify-center align-center row wrap>
-          <chips></chips>
+          <chips />
           <v-flex xs12>
             <buttons />
           </v-flex>
