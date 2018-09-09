@@ -1,6 +1,6 @@
 <template>
   <div id="githubAuth">
-    <v-btn style="background-color:#4e535b" v-if="this.$store.state.auth.discordAuthenticated" href="https://github.com/login/oauth/authorize?client_id=50c9f2e9a129a6bd1637&redirect_uri=http://www.macho.ninja:8000/githubauth/access_token&scope=user"><i class="fab fa-github"/>&nbsp;<span>Link Github Account</span></v-btn>
+    <v-btn style="background-color:#4e535b" v-if="this.$store.state.auth.discordAuthenticated && !this.$store.state.auth.githubAuthenticated" href="https://github.com/login/oauth/authorize?client_id=50c9f2e9a129a6bd1637&redirect_uri=http://www.macho.ninja:8000/githubauth/access_token&scope=user"><i class="fab fa-github"/>&nbsp;<span>Link Github Account</span></v-btn>
   </div>
 </template>
 
