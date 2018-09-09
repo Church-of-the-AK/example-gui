@@ -128,7 +128,7 @@ export default {
         </tr>
         <tr>
           <td>Avatar</td>
-          <td><img src="${response.data.avatarUrl}" height="64" width="64"></td>
+          <td><img src="${response.data.avatarUrl}" height="64" width="64" alt=${response.data.username}></td>
         </tr>
         <tr>
           <td>Banned</td>
@@ -141,10 +141,6 @@ export default {
         <tr>
           <td>Date of last message</td>
           <td>${response.data.dateLastMessage}</td>
-        </tr>
-        <tr>
-          <td>Steam ID</td>
-          <td>${response.data.links.steamId}</td>
         </tr>
         <tr>
           <td>XP</td>

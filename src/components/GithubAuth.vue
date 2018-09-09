@@ -34,12 +34,12 @@ export default {
     },
     async fetchUser () {
       const { data: json } = await axios.get(`https://api.github.com/user?access_token=${window.localStorage.githubId}`)
-      const { data: apiUser } = await axios.get(`http://macho.ninja:8000/users/${this.$store.state.auth.discordUser.id}`)
+      const { data: apiUser } = await axios.get(`http://macho.ninja:8000/users/${this.$store.state.auth.discordUser.id}/links`)
 
       console.log('Fetched user')
 
       // eslint-disable-next-line
-      if (apiUser.links.githubId == json.login) {
+      if (apiUser.github.username == json.login) {
         console.log('User is already linked.')
         this.$store.commit('setGithubUser', json)
         window.localStorage.setItem('githubUser', JSON.stringify(json))
@@ -53,7 +53,7 @@ export default {
         }
         return true
       } else {
-        console.log(`${apiUser.links.githubId} != ${this.$store.state.auth.githubId}`)
+        console.log(`${apiUser.github.username} != ${this.$store.state.auth.githubId}`)
       }
 
       const linkRes = await axios.post(
@@ -62,11 +62,14 @@ export default {
 
       console.log(linkRes.data)
 
-      if (linkRes.data !== 'Successful') {
+      if (linkRes.data.error) {
         this.$store.commit('setGithubId', null)
         this.$store.commit('setGithubAuthenticated', false)
         window.localStorage.removeItem('githubId')
+        window.localStorage.removeItem('githubUser')
+
         console.log('Error')
+
         if (window.location.toString().includes('macho')) {
           window.location = 'http://www.macho.ninja'
         } else if (window.location.toString().includes('localhost')) {
@@ -74,8 +77,8 @@ export default {
         }
       }
 
-      console.log(linkRes.data)
       console.log('Linked account')
+
       if (window.location.toString().includes('macho')) {
         window.location = 'http://www.macho.ninja'
       } else if (window.location.toString().includes('localhost')) {

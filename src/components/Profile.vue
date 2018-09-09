@@ -147,14 +147,6 @@ export default {
           <td>${response.data.dateLastMessage}</td>
         </tr>
         <tr>
-          <td>Steam ID</td>
-          <td>${response.data.links.steamId}</td>
-        </tr>
-        <tr>
-          <td>GitHub ID</td>
-          <td>${response.data.links.githubId}</td>
-        </tr>
-        <tr>
           <td>XP</td>
           <td>${response.data.level.xp}</td>
         </tr>

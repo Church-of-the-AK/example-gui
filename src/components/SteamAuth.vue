@@ -34,32 +34,33 @@ export default {
       this.$store.commit('setSteamUser', null)
     },
     async fetchUser () {
-      const response = await axios.get(
+      const { data: json } = await axios.get(
         `http://macho.ninja:8000/steamauth/id/${window.localStorage.steamId ||
           this.$store.state.auth.steamId}`
       )
       const { data: apiUser } = await axios.get(
-        `http://macho.ninja:8000/users/${this.$store.state.auth.discordUser.id}`
+        `http://macho.ninja:8000/users/${this.$store.state.auth.discordUser.id}/links`
       )
-      const json = response.data
 
       console.log('Fetched user')
 
       // eslint-disable-next-line
-      if (apiUser.links.steamId == this.$store.state.auth.steamId) {
+      if (apiUser.steam.userId == this.$store.state.auth.steamId) {
         console.log('User is already linked.')
         this.$store.commit('setSteamUser', json)
         window.localStorage.setItem('steamUser', JSON.stringify(json))
         window.localStorage.setItem('steamId', json.steamid)
+
         if (window.location.toString().includes('macho')) {
           window.location = 'http://www.macho.ninja'
         } else if (window.location.toString().includes('localhost')) {
           window.location = 'http://localhost:8080'
         }
+
         return true
       } else {
         console.log(
-          `${apiUser.links.steamId} != ${this.$store.state.auth.steamId}`
+          `${apiUser.steam.userId} != ${this.$store.state.auth.steamId}`
         )
       }
 
@@ -72,24 +73,26 @@ export default {
 
       console.log(linkRes.data)
 
-      if (linkRes.data !== 'Successful') {
+      if (linkRes.data.error) {
         this.$store.commit('setSteamId', null)
         this.$store.commit('setSteamAuthenticated', false)
         window.localStorage.removeItem('steamId')
         console.log('Error')
+
         if (window.location.toString().includes('macho')) {
           window.location = 'http://www.macho.ninja'
         } else if (window.location.toString().includes('localhost')) {
           window.location = 'http://localhost:8080'
         }
+
         return false
       }
 
-      console.log(linkRes.data)
       this.$store.commit('setSteamUser', json)
       window.localStorage.setItem('steamUser', JSON.stringify(json))
       window.localStorage.setItem('steamId', json.steamid)
       console.log('Linked account')
+
       if (window.location.toString().includes('macho')) {
         window.location = 'http://www.macho.ninja'
       } else if (window.location.toString().includes('localhost')) {

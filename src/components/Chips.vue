@@ -6,7 +6,7 @@
       color="grey lighten-4"
       v-if="this.$store.state.auth.discordUser && this.$store.state.auth.discordUser.avatar"
     >
-      <img :src="'https://cdn.discordapp.com/avatars/' + this.$store.state.auth.discordUser.id + '/' + this.$store.state.auth.discordUser.avatar + '.png'" />
+      <img :src="'https://cdn.discordapp.com/avatars/' + this.$store.state.auth.discordUser.id + '/' + this.$store.state.auth.discordUser.avatar + '.png'" :alt="this.$store.state.auth.discordUser.username" />
     </v-avatar>
 
     <v-container grid-list-xl>

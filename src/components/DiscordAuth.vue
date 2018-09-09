@@ -65,15 +65,24 @@ export default {
       const json = response.data
       this.$store.commit('setDiscordUser', json)
       window.localStorage.setItem('discordUser', JSON.stringify(this.$store.state.auth.discordUser))
-      const {data: apiUser} = await axios.get(`http://macho.ninja:8000/users/${json.id}`)
+      const {data: apiUser} = await axios.get(`http://macho.ninja:8000/users/${json.id}/links`)
 
-      if (apiUser.links.steamId !== '') {
-        window.localStorage.setItem('steamId', apiUser.links.steamId)
-        this.$store.commit('setSteamId', apiUser.links.steamId)
+      if (apiUser.steam.userId) {
+        window.localStorage.setItem('steamId', apiUser.steam.userId)
+        this.$store.commit('setSteamId', apiUser.steam.userId)
         const { data: steamUser } = await axios.get(`http://macho.ninja:8000/steamauth/id/${window.localStorage.steamId || this.$store.state.auth.steamId}`)
 
         this.$store.commit('setSteamUser', steamUser)
         window.localStorage.setItem('steamUser', JSON.stringify(steamUser))
+      }
+
+      if (apiUser.github.username) {
+        window.localStorage.setItem('githubId', apiUser.github.username)
+        this.$store.commit('setGithubId', apiUser.github.username)
+        const { data: githubUser } = await axios.get(`https://api.github.com/users/${window.localStorage.steamId || this.$store.state.auth.steamId}`)
+
+        this.$store.commit('setGithubUser', githubUser)
+        window.localStorage.setItem('githubUser', JSON.stringify(githubUser))
       }
 
       if (window.location.toString().includes('macho')) {
