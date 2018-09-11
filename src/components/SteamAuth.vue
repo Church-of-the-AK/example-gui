@@ -1,6 +1,6 @@
 <template>
   <div id="steamAuth">
-    <form action="http://macho.ninja:8000/steamauth" method="post" v-if="this.$store.state.auth.discordUser && !this.$store.state.auth.steamUser">
+    <form action="https://www.macho.ninja:8000/api/steamauth" method="post" v-if="this.$store.state.auth.discordUser && !this.$store.state.auth.steamUser">
       <input name="submit" type="image" src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_small.png" alt="Sign-in through Steam">
     </form>
   </div>
@@ -35,11 +35,11 @@ export default {
     },
     async fetchUser () {
       const { data: json } = await axios.get(
-        `http://macho.ninja:8000/steamauth/id/${window.localStorage.steamId ||
+        `https://www.macho.ninja:8000/api/steamauth/id/${window.localStorage.steamId ||
           this.$store.state.auth.steamId}`
       )
       const { data: apiUser } = await axios.get(
-        `http://macho.ninja:8000/users/${this.$store.state.auth.discordUser.id}/links`
+        `https://www.macho.ninja:8000/api/users/${this.$store.state.auth.discordUser.id}/links`
       )
 
       console.log('Fetched user')
@@ -52,9 +52,9 @@ export default {
         window.localStorage.setItem('steamId', json.steamid)
 
         if (window.location.toString().includes('macho')) {
-          window.location = 'http://www.macho.ninja'
+          window.location = 'https://www.macho.ninja'
         } else if (window.location.toString().includes('localhost')) {
-          window.location = 'http://localhost:8080'
+          window.location = 'https://localhost:8080'
         }
 
         return true
@@ -65,7 +65,7 @@ export default {
       }
 
       const linkRes = await axios.post(
-        `http://macho.ninja:8000/steamauth/link?discordId=${
+        `https://www.macho.ninja:8000/api/steamauth/link?discordId=${
           this.$store.state.auth.discordUser.id
         }&steamId=${json.steamid}&jwt=${window.localStorage.jwt ||
           this.$store.state.auth.jwt}`
@@ -80,9 +80,9 @@ export default {
         console.log('Error')
 
         if (window.location.toString().includes('macho')) {
-          window.location = 'http://www.macho.ninja'
+          window.location = 'https://www.macho.ninja'
         } else if (window.location.toString().includes('localhost')) {
-          window.location = 'http://localhost:8080'
+          window.location = 'https://localhost:8080'
         }
 
         return false
@@ -94,9 +94,9 @@ export default {
       console.log('Linked account')
 
       if (window.location.toString().includes('macho')) {
-        window.location = 'http://www.macho.ninja'
+        window.location = 'https://www.macho.ninja'
       } else if (window.location.toString().includes('localhost')) {
-        window.location = 'http://localhost:8080'
+        window.location = 'https://localhost:8080'
       }
     }
   }

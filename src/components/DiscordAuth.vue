@@ -12,9 +12,9 @@ import axios from 'axios'
 const CLIENT_ID = '399794061059424257'
 var redirect
 if (window.location.toString().includes('macho')) {
-  redirect = encodeURIComponent('http://www.macho.ninja/')
+  redirect = encodeURIComponent('https://www.macho.ninja/')
 } else if (window.location.toString().includes('localhost')) {
-  redirect = encodeURIComponent('http://localhost:8080/')
+  redirect = encodeURIComponent('https://localhost:8080/')
 }
 
 export default {
@@ -51,7 +51,7 @@ export default {
       this.$store.commit('setJWT', null)
     },
     async fetchToken () {
-      const response = await axios.get(`http://macho.ninja:8000/discordauth?code=${this.$store.state.auth.discordCode}&redirect=${redirect}`)
+      const response = await axios.get(`https://www.macho.ninja:8000/api/discordauth?code=${this.$store.state.auth.discordCode}&redirect=${redirect}`)
       const json = response.data
       this.$store.commit('setDiscordToken', json[0].access_token)
       this.$store.commit('setJWT', json[1].jwt)
@@ -65,12 +65,12 @@ export default {
       const json = response.data
       this.$store.commit('setDiscordUser', json)
       window.localStorage.setItem('discordUser', JSON.stringify(this.$store.state.auth.discordUser))
-      const {data: apiUser} = await axios.get(`http://macho.ninja:8000/users/${json.id}/links`)
+      const {data: apiUser} = await axios.get(`https://www.macho.ninja:8000/api/users/${json.id}/links`)
 
       if (apiUser.steam.userId) {
         window.localStorage.setItem('steamId', apiUser.steam.userId)
         this.$store.commit('setSteamId', apiUser.steam.userId)
-        const { data: steamUser } = await axios.get(`http://macho.ninja:8000/steamauth/id/${window.localStorage.steamId || this.$store.state.auth.steamId}`)
+        const { data: steamUser } = await axios.get(`https://www.macho.ninja:8000/api/steamauth/id/${window.localStorage.steamId || this.$store.state.auth.steamId}`)
 
         this.$store.commit('setSteamUser', steamUser)
         window.localStorage.setItem('steamUser', JSON.stringify(steamUser))
@@ -86,9 +86,9 @@ export default {
       }
 
       if (window.location.toString().includes('macho')) {
-        window.location = 'http://www.macho.ninja'
+        window.location = 'https://www.macho.ninja'
       } else if (window.location.toString().includes('localhost')) {
-        window.location = 'http://localhost:8080'
+        window.location = 'https://localhost:8080'
       }
     }
   }

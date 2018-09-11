@@ -10,7 +10,7 @@
     </v-avatar>
 
     <v-container grid-list-xl>
-      <p>Welcome to the official Macho GUI! This website is mostly for people that cannot/don't want to read the JSON on the official&nbsp;<a href="http://macho.ninja:8000/users" target="_blank" rel="noopener">Macho API</a>.</p>
+      <p>Welcome to the official Macho GUI! This website is mostly for people that cannot/don't want to read the JSON on the official&nbsp;<a href="https://www.macho.ninja:8000/api/users" target="_blank" rel="noopener">Macho API</a>.</p>
     </v-container>
   </div>
 </template>

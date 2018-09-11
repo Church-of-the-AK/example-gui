@@ -42,7 +42,7 @@ export default {
   created () {
     if (!window.location.toString().includes('www.') && !window.location.toString().includes('localhost')) {
       console.log(`Redirecting (old link: ${window.location.toString()})`)
-      window.location = 'http://www.macho.ninja'
+      window.location = 'https://www.macho.ninja'
     }
   }
 }
