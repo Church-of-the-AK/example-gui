@@ -9,13 +9,7 @@
             <buttons />
             <div id='usersData'>
               <p style="font-size:20px">{{ msg }}</p>
-              <v-tooltip right>
-                <v-btn slot="activator" @click="loadUsers();changeVisibility()" icon large>
-                  <v-icon large id="usersArrow">arrow_drop_down</v-icon>
-                </v-btn>
-                <span id="viewUsers">Show Users</span>
-              </v-tooltip>
-              <div id='usersList' style="display:none">
+              <div id='usersList'>
                 <table style="margin:auto" class="centered">
                   <thead>
                     <tr>
@@ -32,6 +26,8 @@
                   </tbody>
                 </table>
               </div>
+
+              <v-btn style="background-color:#8aa1fc" @click="loadUsers(null)" id='loadMore'><span>Load more...</span></v-btn>
             </div>
           </v-flex>
           <v-flex shrink>
@@ -67,7 +63,8 @@ export default {
   data () {
     return {
       msg: 'Hey, look! Users!',
-      users: null,
+      users: [],
+      page: 1,
       headers: [
         {
           text: 'Property',
@@ -80,14 +77,12 @@ export default {
     }
   },
   created: function () {
+    this.loadUsers(0)
   },
   methods: {
-    loadUsers: function () {
-      if (this.users) {
-        return true
-      }
-      axios.get('https://www.macho.ninja:8000/api/users').then(response => {
-        this.users = response.data
+    loadUsers: function (page) {
+      axios.get(`https://www.macho.ninja/api/users?page=${page === null ? this.page++ : page}`).then(response => {
+        this.users.push(...response.data)
       })
     },
     loadUserInfo: function (id) {
@@ -106,7 +101,7 @@ export default {
       this.$store.commit('addUsersOpen', id)
       this.$store.commit('addUsersOpened', id)
 
-      axios.get(`https://www.macho.ninja:8000/api/users/${id}`).then(response => {
+      axios.get(`https://www.macho.ninja/api/users/${id}`).then(response => {
         let div = document.getElementById(id)
         div.innerHTML = `
         <hr>
@@ -171,21 +166,6 @@ export default {
         <hr>
         `
       })
-    },
-    changeVisibility: function () {
-      let button = document.getElementById('viewUsers')
-      let arrow = document.getElementById('usersArrow')
-      let div = document.getElementById('usersList')
-      var x = div.offsetParent
-      if (x === null) {
-        div.setAttribute('style', 'display:initial')
-        button.textContent = 'Hide Users'
-        arrow.textContent = 'arrow_drop_up'
-      } else {
-        div.setAttribute('style', 'display:none')
-        button.textContent = 'Show Users'
-        arrow.textContent = 'arrow_drop_down'
-      }
     }
   }
 }

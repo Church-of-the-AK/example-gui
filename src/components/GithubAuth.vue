@@ -34,7 +34,7 @@ export default {
     },
     async fetchUser () {
       const { data: json } = await axios.get(`https://api.github.com/user?access_token=${window.localStorage.githubId}`)
-      const { data: apiUser } = await axios.get(`https://www.macho.ninja:8000/api/users/${this.$store.state.auth.discordUser.id}/links`)
+      const { data: apiUser } = await axios.get(`https://www.macho.ninja/api/users/${this.$store.state.auth.discordUser.id}/links`)
 
       console.log('Fetched user')
 
@@ -53,11 +53,11 @@ export default {
         }
         return true
       } else {
-        console.log(`${apiUser.github.username} != ${this.$store.state.auth.githubId}`)
+        console.log(`${apiUser.github.username} != ${json.login}`)
       }
 
       const linkRes = await axios.post(
-        `https://www.macho.ninja:8000/api/githubauth/link?discordId=${
+        `https://www.macho.ninja/api/githubauth/link?discordId=${
           this.$store.state.auth.discordUser.id}&githubId=${json.login}&jwt=${window.localStorage.jwt || this.$store.state.auth.jwt}`)
 
       console.log(linkRes.data)
@@ -75,6 +75,8 @@ export default {
         } else if (window.location.toString().includes('localhost')) {
           window.location = 'https://localhost:8080'
         }
+
+        return
       }
 
       console.log('Linked account')

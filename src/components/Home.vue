@@ -38,12 +38,6 @@ export default {
     'buttons': Buttons
   },
   data: () => ({
-  }),
-  created () {
-    if (!window.location.toString().includes('www.') && !window.location.toString().includes('localhost')) {
-      console.log(`Redirecting (old link: ${window.location.toString()})`)
-      window.location = 'https://www.macho.ninja'
-    }
-  }
+  })
 }
 </script>

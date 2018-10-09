@@ -7,6 +7,8 @@
           <chips />
           <v-flex xs12>
             <buttons />
+            <v-btn large style="background-color:#8aa1fc" @click="claimDailies()" id='dailiesButton'><v-icon>attach_money</v-icon> <span>Claim Dailies</span></v-btn>
+            <div id="dailiesResult"></div>
             <h2>Linked Accounts</h2>
             <v-list>
               <v-list-tile avatar v-if='this.$store.state.auth.steamAuthenticated'>
@@ -63,6 +65,16 @@ import NavigationDrawer from './NavigationDrawer.vue'
 import Footer from './Footer.vue'
 import Chips from './Chips.vue'
 import Buttons from './Buttons.vue'
+
+const CLIENT_ID = '399794061059424257'
+let redirect
+
+if (window.location.toString().includes('macho')) {
+  redirect = encodeURIComponent('https://www.macho.ninja/')
+} else if (window.location.toString().includes('localhost')) {
+  redirect = encodeURIComponent('https://localhost:8080/')
+}
+
 export default {
   components: {
     navigationDrawer: NavigationDrawer,
@@ -94,7 +106,7 @@ export default {
   },
   methods: {
     unlinkSteam () {
-      axios.post(`https://www.macho.ninja:8000/api/steamauth/link?discordId=${this.$store.state.auth.discordUser.id}&steamId&jwt=${window.localStorage.jwt || this.$store.state.auth.jwt}`)
+      axios.post(`https://www.macho.ninja/api/steamauth/link?discordId=${this.$store.state.auth.discordUser.id}&steamId&jwt=${window.localStorage.jwt || this.$store.state.auth.jwt}`)
       window.localStorage.removeItem('steamId')
       window.localStorage.removeItem('steamUser')
       this.$store.commit('setSteamAuthenticated', false)
@@ -102,15 +114,48 @@ export default {
       this.$store.commit('setSteamUser', null)
     },
     unlinkGithub () {
-      axios.post(`https://www.macho.ninja:8000/api/githubauth/link?discordId=${this.$store.state.auth.discordUser.id}&githubId&jwt=${window.localStorage.jwt || this.$store.state.auth.jwt}`)
+      axios.post(`https://www.macho.ninja/api/githubauth/link?discordId=${this.$store.state.auth.discordUser.id}&githubId&jwt=${window.localStorage.jwt || this.$store.state.auth.jwt}`)
       window.localStorage.removeItem('githubId')
       window.localStorage.removeItem('githubUser')
       this.$store.commit('setGithubAuthenticated', false)
       this.$store.commit('setGithubId', null)
       this.$store.commit('setGithubUser', null)
     },
+    async claimDailies () {
+      const { data: response } = await axios.post(`https://www.macho.ninja/api/actions/dailies?jwt=${window.localStorage.getItem('jwt') || this.$store.state.auth.jwt}`)
+      const result = document.getElementById('dailiesResult')
+
+      console.log(response)
+
+      if (response.error) {
+        if (response.error === 'time') {
+          result.innerHTML = `Error: Please wait for another ${response.hoursLeft.toFixed(2)} hours.`
+          return
+        }
+
+        if (response.error === 'token') {
+          window.localStorage.clear()
+          this.$store.commit('setDiscordAuthenticated', false)
+          this.$store.commit('setDiscordCode', null)
+          this.$store.commit('setDiscordToken', null)
+          this.$store.commit('setDiscordUser', null)
+          this.$store.commit('setSteamUser', null)
+          this.$store.commit('setSteamAuthenticated', false)
+          this.$store.commit('setSteamId', null)
+          this.$store.commit('setJWT', null)
+
+          window.location = `https://discordapp.com/oauth2/authorize?client_id=${CLIENT_ID}&scope=identify&response_type=code&redirect_uri=${redirect}`
+          return
+        }
+
+        result.innerHTML = `Error: ${response.error}`
+        return
+      }
+
+      result.innerHTML = `Success! Your balance is now ${response.balance}`
+    },
     loadUserInfo: function (id) {
-      axios.get(`https://www.macho.ninja:8000/api/users/${id}`).then(response => {
+      axios.get(`https://www.macho.ninja/api/users/${id}`).then(response => {
         let div = document.getElementById('profile')
         div.innerHTML = `
         <hr>

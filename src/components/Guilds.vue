@@ -9,13 +9,7 @@
             <buttons />
             <div class='guilds'>
               <p style="font-size:20px">{{ msg }}</p>
-              <v-tooltip right>
-                <v-btn slot="activator" @click="changeVisibility()" icon large>
-                  <v-icon large id="guildsArrow">arrow_drop_down</v-icon>
-                </v-btn>
-                <span id="viewGuilds">Show Guilds</span>
-              </v-tooltip>
-              <div id='guildsList' style="display:none">
+              <div id='guildsList'>
                 <table style="margin:auto" class="centered">
                 <thead>
                   <tr>
@@ -36,7 +30,7 @@
           </v-flex>
           <v-flex shrink>
             <v-tooltip right>
-              <v-btn slot="activator" href="https://github.com/jasonhaxstuff/natsukigui" icon large target="_blank">
+              <v-btn slot="activator" href="https://github.com/MachoBot/gui" icon large target="_blank" rel="noopener">
                 <v-icon large>code</v-icon>
               </v-btn>
               <span>Source</span>
@@ -105,7 +99,8 @@ export default {
       if (this.guilds) {
         return true
       }
-      axios.get('https://natsuki.tk/api/guilds').then(response => {
+
+      axios.get('https://macho.ninja/api/guilds').then(response => {
         this.guilds = response.data
       })
     },
@@ -122,7 +117,7 @@ export default {
       }
       this.$store.commit('addGuildsOpen', id)
       this.$store.commit('addGuildsOpened', id)
-      axios.get(`https://natsuki.tk/api/guilds/${id}`).then(response => {
+      axios.get(`https://macho.ninja/api/guilds/${id}`).then(response => {
         let div = document.getElementById(response.data.id)
         div.innerHTML = `
         <table style="margin:auto" class="highlight centered">
@@ -142,44 +137,30 @@ export default {
           <td>${response.data.id}</td>
         </tr>
         <tr>
-          <td>Levels enabled</td>
-          <td>${response.data.settings.levelsEnabled}</td>
+          <td>Level up messages enabled</td>
+          <td>${response.data.settings.levelUpMessages}</td>
         </tr>
         <tr>
-        <td>DMs enabled</td>
-        <td>${response.data.settings.directMessagesEnabled}</td>
+        <td>Suggestion channel</td>
+        <td>${response.data.settings.suggestionChannel}</td>
         </tr>
         <tr>
-          <td>DB ID</td>
-          <td>${response.data.settings.id}</td>
+          <td>Music text channel</td>
+          <td>${response.data.settings.musicTextChannel}</td>
         </tr>
         <tr>
-          <td>Support tickets</td>
-          <td>${response.data.supportTickets}</td>
+          <td>Music voice channel</td>
+          <td>${response.data.settings.musicVoiceChannel}</td>
         </tr>
         <tr>
-          <td>Suggestions</td>
-          <td>${response.data.suggestions}</td>
+          <td>Log channel</td>
+          <td>${response.data.settings.logChannel}</td>
         </tr>
         </tbody>
       </table>
       <hr>
         `
       })
-    },
-    changeVisibility: function () {
-      let button = document.getElementById('viewGuilds')
-      let div = document.getElementById('guildsList')
-      var x = div.offsetParent
-      if (x === null) {
-        div.setAttribute('style', 'display:initial')
-        button.textContent = 'Hide Guilds'
-        document.getElementById('guildsArrow').textContent = 'arrow_drop_up'
-      } else {
-        div.setAttribute('style', 'display:none')
-        button.textContent = 'Show Guilds'
-        document.getElementById('guildsArrow').textContent = 'arrow_drop_down'
-      }
     }
   }
 }
