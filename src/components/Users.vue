@@ -1,6 +1,6 @@
 <template>
   <v-app id="inspire" dark>
-    <navigationDrawer/>
+    <navigationDrawer />
     <v-content>
       <v-container fluid fill-height text-xs-center>
         <v-layout justify-center align-center row wrap>
@@ -41,7 +41,7 @@
         </v-layout>
       </v-container>
     </v-content>
-    <customFooter></customFooter>
+    <customFooter />
   </v-app>
 </template>
 
@@ -64,7 +64,7 @@ export default {
     return {
       msg: 'Hey, look! Users!',
       users: [],
-      page: 1,
+      skip: 0,
       headers: [
         {
           text: 'Property',
@@ -80,8 +80,8 @@ export default {
     this.loadUsers(0)
   },
   methods: {
-    loadUsers: function (page) {
-      axios.get(`https://www.macho.ninja/api/users?page=${page === null ? this.page++ : page}`).then(response => {
+    loadUsers: function (skip) {
+      return axios.get(`https://www.macho.ninja/api/users?skip=${skip === null ? this.users.length : skip}`).then(response => {
         this.users.push(...response.data)
       })
     },
